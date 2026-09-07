@@ -10,7 +10,7 @@
 
 <br/>
 
-<img src="https://w7.pngwing.com/pngs/815/92/png-transparent-hollow-knight-drawing-design-game-vertebrate-half-thumbnail.png" />
+<img src="https://e7.pngegg.com/pngimages/996/775/png-clipart-hollow-knight-art-game-art-game-hollow-knight-comics-game.png" />
 
 </div>
 
