@@ -1,1 +1,934 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hollow Knight: Silksong — Pharloom Sanctum</title>
+    <link id="favicon" rel="icon" href="https://store.steampowered.com/favicon.ico">
+    <style>
+        :root {
+            --hk-bg: #05070a;
+            --hk-panel: rgba(10, 14, 22, 0.92);
+            --hk-gold: #e5b95c;
+            --hk-gold-glow: rgba(229, 185, 92, 0.35);
+            --hk-gold-dim: #7a612f;
+            --hk-silk: #e63956;
+            --hk-silk-glow: rgba(230, 57, 86, 0.6);
+            --hk-text: #f1f5f9;
+            --hk-sub: #94a3b8;
+            --hk-border: rgba(229, 185, 92, 0.25);
+            --blood-red: #ff0033;
+        }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--hk-bg);
+            color: var(--hk-text);
+            font-family: 'Cinzel', 'Trajan Pro', 'Georgia', serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        .title-art-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: linear-gradient(180deg, rgba(5,7,10,0.55) 0%, rgba(5,7,10,0.9) 100%),
+            url("https://i.redd.it/8qhwxq5izkg21.png");
+            background-size: cover;
+            background-position: center 25%;
+            z-index: 0;
+            filter: brightness(0.85);
+        }
+
+        #shake-container {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 1;
+        }
+
+        .rune-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(10, 14, 22, 0.85);
+            border: 1px solid var(--hk-gold-dim);
+            color: var(--hk-gold);
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            padding: 5px 18px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(8px);
+        }
+
+        h1 {
+            font-size: clamp(1.6rem, 4.5vw, 2.8rem);
+            letter-spacing: 0.14em;
+            text-align: center;
+            text-transform: uppercase;
+            color: #ffffff;
+            text-shadow: 0 0 25px rgba(229, 185, 92, 0.5);
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            font-family: 'Courier New', monospace;
+            font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+            color: var(--hk-sub);
+            text-align: center;
+            max-width: 640px;
+            margin-bottom: 14px;
+        }
+
+        /* Системный чекер */
+        .system-specs-bar {
+            display: flex;
+            gap: 16px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(229, 185, 92, 0.2);
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            margin-bottom: 14px;
+            color: #94a3b8;
+        }
+
+        .spec-item { display: flex; align-items: center; gap: 5px; }
+        .spec-ok { color: #4ade80; font-weight: bold; }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 780px;
+            margin-bottom: 16px;
+            z-index: 5;
+        }
+
+        .tool-card {
+            background: var(--hk-panel);
+            border: 1px solid var(--hk-border);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            backdrop-filter: blur(12px);
+            clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+            transition: all 0.2s ease;
+        }
+
+        .tool-card:hover {
+            border-color: var(--hk-gold);
+            box-shadow: 0 0 14px var(--hk-gold-glow);
+        }
+
+        .tool-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .tool-title { font-size: 0.75rem; color: var(--hk-gold); letter-spacing: 0.08em; text-transform: uppercase; }
+        .tool-lang { font-family: 'Courier New', monospace; font-size: 0.65rem; color: #64748b; }
+        .tool-desc { font-family: 'Courier New', monospace; font-size: 0.68rem; color: var(--hk-sub); line-height: 1.3; margin-bottom: 10px; }
+
+        .btn-gothic {
+            font-family: inherit;
+            background: linear-gradient(180deg, #182030 0%, #0d121c 100%);
+            border: 1px solid var(--hk-border);
+            color: var(--hk-text);
+            padding: 8px 10px;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn-gothic:hover { border-color: var(--hk-gold); color: var(--hk-gold); }
+
+        .action-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            max-width: 480px;
+            z-index: 10;
+        }
+
+        .btn-main-silk {
+            font-family: inherit;
+            width: 100%;
+            padding: 15px 20px;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-weight: bold;
+            background: linear-gradient(180deg, #ecd189 0%, var(--hk-gold) 100%);
+            color: #05070a;
+            border: 1px solid #fff2cc;
+            cursor: pointer;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+            box-shadow: 0 0 20px rgba(229, 185, 92, 0.4);
+            transition: all 0.2s;
+        }
+
+        .btn-main-silk:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(229, 185, 92, 0.6); }
+
+        .btn-steam-pipe {
+            font-family: inherit;
+            width: 100%;
+            padding: 11px 16px;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: #0a111a;
+            color: #66c0f4;
+            border: 1px solid #1e3a5f;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+        }
+
+        .btn-aux-row { display: flex; gap: 10px; width: 100%; }
+        .btn-aux { flex: 1; }
+
+        /* Модальные окна */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(3, 5, 8, 0.88);
+            backdrop-filter: blur(16px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: var(--hk-panel);
+            border: 1px solid var(--hk-gold-dim);
+            padding: 20px;
+            width: 100%;
+            max-width: 580px;
+            box-shadow: 0 0 45px rgba(0, 0, 0, 0.95);
+            clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--hk-border);
+            padding-bottom: 8px;
+        }
+
+        .modal-title { font-size: 0.9rem; color: var(--hk-gold); text-transform: uppercase; }
+        .close-btn { background: transparent; border: none; color: var(--hk-sub); font-size: 1.2rem; cursor: pointer; }
+
+        .terminal-screen {
+            font-family: 'Courier New', monospace;
+            background: #040608;
+            border: 1px solid #1a2230;
+            color: #93c5fd;
+            padding: 10px;
+            font-size: 0.72rem;
+            height: 140px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            text-align: left;
+        }
+
+        .controls-subgrid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.72rem;
+        }
+
+        .setting-item {
+            background: #080c14;
+            border: 1px solid #1e293b;
+            padding: 6px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .setting-item input {
+            background: #111827;
+            border: 1px solid #334155;
+            color: var(--hk-gold);
+            padding: 2px 4px;
+            font-family: inherit;
+            font-size: 0.7rem;
+            width: 100px;
+        }
+
+        .lore-scroll-box { max-height: 260px; overflow-y: auto; text-align: left; margin-bottom: 12px; }
+        .timeline-event { position: relative; padding-left: 16px; margin-bottom: 12px; border-left: 1px solid var(--hk-gold-dim); }
+        .timeline-date { font-size: 0.7rem; color: var(--hk-gold); }
+        .timeline-text { font-family: 'Courier New', monospace; font-size: 0.72rem; color: var(--hk-sub); }
+
+        .trailer-box { max-width: 920px; width: 100%; padding: 14px; }
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid var(--hk-gold-dim); }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        #download-box {
+            display: none;
+            width: 100%;
+            max-width: 480px;
+            background: var(--hk-panel);
+            border: 1px solid var(--hk-gold-dim);
+            padding: 18px;
+            z-index: 10;
+        }
+
+        .progress-track { width: 100%; height: 8px; background: #040608; overflow: hidden; margin: 10px 0; border: 1px solid #1e293b; }
+        .progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #d97706, var(--hk-gold)); transition: width 0.08s linear; }
+
+        /* Хоррор-пакет */
+        .horror-glitch-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 99990;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.3) 0px, rgba(0,0,0,0.3) 2px, rgba(255,0,50,0.15) 3px, rgba(0,0,0,0.4) 4px);
+        }
+
+        .screamer-bg { animation: violentFlash 0.08s infinite !important; }
+        .shake-effect { animation: violentShake 0.04s infinite !important; }
+
+        #screamer-img {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            object-fit: cover;
+            filter: contrast(180%) saturate(220%) drop-shadow(0 0 30px #ff0033);
+        }
+
+        .fake-alert {
+            position: fixed;
+            background: rgba(10, 0, 3, 0.95);
+            border: 2px solid var(--blood-red);
+            color: #ffb3b8;
+            padding: 16px;
+            box-shadow: 0 0 35px rgba(255, 0, 51, 0.85);
+            z-index: 99999;
+            width: 310px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            animation: alertSpasm 0.1s infinite alternate;
+        }
+
+        .fake-alert .alert-header { font-size: 0.72rem; color: #ff0033; font-weight: 900; }
+        .fake-alert .alert-body { margin-top: 10px; font-weight: bold; font-size: 0.85rem; color: #ffffff; }
+        .fake-alert button {
+            margin-top: 12px;
+            background: #ff0033;
+            color: #ffffff;
+            border: 1px solid #fff;
+            padding: 6px 16px;
+            cursor: pointer;
+            font-weight: 900;
+        }
+
+        @keyframes violentFlash {
+            0% { background-color: #05070a; filter: invert(0); }
+            50% { background-color: #000000; filter: invert(0.2) saturate(3); }
+            100% { background-color: #05070a; filter: invert(0); }
+        }
+
+        @keyframes violentShake {
+            0% { transform: translate(5px, 4px) rotate(0.8deg); }
+            50% { transform: translate(-6px, -4px) rotate(-1.2deg); }
+            100% { transform: translate(4px, -3px) rotate(0.5deg); }
+        }
+
+        @keyframes alertSpasm {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(20deg); }
+        }
+
+        @media (max-width: 768px) {
+            .tools-grid { grid-template-columns: 1fr; }
+            .btn-aux-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body id="main-body">
+
+<div class="title-art-bg"></div>
+<div class="horror-glitch-overlay" id="glitch-overlay"></div>
+
+<div id="shake-container">
+    <div class="rune-badge" id="badge">PHARLOOM CITADEL ARCHIVE • APPID #1030300</div>
+
+    <h1 id="title">Hollow Knight: Silksong</h1>
+    <p class="subtitle" id="desc">Ранняя закрытая сборка Team Cherry (Direct Valve Release Stream).</p>
+
+    <!-- Детектор системы -->
+    <div class="system-specs-bar" id="specs-bar">
+        <div class="spec-item">OS: <span class="spec-ok" id="user-os">Detecting...</span></div>
+        <div class="spec-item">CPU Cores: <span class="spec-ok" id="user-cores">8</span></div>
+        <div class="spec-item">Steamworks DRM: <span class="spec-ok">PASS [OK]</span></div>
+    </div>
+
+    <!-- Инструменты -->
+    <div class="tools-grid" id="dev-grid">
+        <div class="tool-card">
+            <div>
+                <div class="tool-title-row">
+                    <span class="tool-title">Шёлкоплёт</span>
+                    <span class="tool-lang">Python struct</span>
+                </div>
+                <div class="tool-desc">Генератор токена и патчер user1.dat: инъекция Розариев и Гребней под ваш Steam ID.</div>
+            </div>
+            <button class="btn-gothic" onclick="openModal('python-modal')">ПРОБУДИТЬ ШЁЛК</button>
+        </div>
+
+        <div class="tool-card">
+            <div>
+                <div class="tool-title-row">
+                    <span class="tool-title">Песнь Цитадели</span>
+                    <span class="tool-lang">Java Threads</span>
+                </div>
+                <div class="tool-desc">Асинхронный байткод-перехватчик Steamworks DRM и монитор пула виртуальных потоков.</div>
+            </div>
+            <button class="btn-gothic" onclick="openModal('java-modal')">УСЛЫШАТЬ ЗВОН</button>
+        </div>
+
+        <div class="tool-card">
+            <div>
+                <div class="tool-title-row">
+                    <span class="tool-title">Сказания Фарлума</span>
+                    <span class="tool-lang">Лор & Сюжет</span>
+                </div>
+                <div class="tool-desc">История паломничества Хорнет, природа Шёлка и Песни, и тайна Сияющей Цитадели.</div>
+            </div>
+            <button class="btn-gothic" onclick="openModal('lore-modal')">ЧИТАТЬ ИСТОРИЮ</button>
+        </div>
+    </div>
+
+    <!-- Кнопки -->
+    <div class="action-container" id="actions-panel">
+        <button class="btn-main-silk" onclick="initDownload('build')">СКАЧАТЬ СБОРКУ SILKSONG.EXE (1.9 ГБ)</button>
+
+        <button class="btn-steam-pipe" onclick="launchViaSteam()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15.2c-.83-.41-1.4-1.26-1.4-2.2 0-1.38 1.12-2.5 2.5-2.5.3 0 .58.05.84.15l2.42-3.51c-.04-.2-.06-.41-.06-.64 0-1.93 1.57-3.5 3.5-3.5s3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5c-.23 0-.44-.02-.64-.06l-3.51 2.42c.1.26.15.54.15.84 0 1.38-1.12 2.5-2.5 2.5-.94 0-1.79-.57-2.2-1.4h-2.1c1.23 3.68 4.7 6.4 8.8 6.4 5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
+            </svg>
+            ЗАПУСТИТЬ ИЗ STEAM (APP ID: 1030300)
+        </button>
+
+        <div class="btn-aux-row">
+            <button class="btn-gothic btn-aux" onclick="openModal('mirror-modal')">Зеркало (Tor Onion)</button>
+            <button class="btn-gothic btn-aux" onclick="openTrailer()">Трейлер (Большой экран)</button>
+        </div>
+    </div>
+
+    <!-- Загрузка -->
+    <div id="download-box">
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--hk-sub);">
+            <span id="file-title">silksong_citadel_build.enc</span>
+            <span id="percent-label">0%</span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: #64748b;">
+            <span id="speed-label">42.8 МБ/с</span>
+            <span id="state-label">Распаковка шёлковых нитей...</span>
+        </div>
+    </div>
+
+    <img id="screamer-img" src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/wm/2025/06/hollow-knight-silksong-reveal-trailer-silhouette-orange-color-edit.jpg?w=1200&h=628&fit=crop" alt="Silksong Hornet">
+</div>
+
+<!-- Модалка Tor Mirror -->
+<div class="modal-overlay" id="mirror-modal" onclick="closeOnBackdrop(event, 'mirror-modal')">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span class="modal-title">🧅 Tor Onion // Deep Mirror Tunnel</span>
+            <button class="close-btn" onclick="closeModal('mirror-modal')">✕</button>
+        </div>
+        <div class="terminal-screen" id="mirror-log">
+            [circuit-1] Подключение к cherry-guard-relay.onion:9050...
+            [circuit-2] Прыжок через 3 прокси: Sydney -> Frankfurt -> Pharloom...
+            [status] Туннель защищен. Обнаружен закрытый репозиторий Team Cherry.
+        </div>
+        <div style="display:flex; gap: 10px;">
+            <button class="btn-gothic" style="flex:1;" onclick="execMirrorBypass()">ПРОБИТЬ FIREWALL ЗЕРКАЛА</button>
+            <button class="btn-gothic" onclick="closeModal('mirror-modal')">ЗАКРЫТЬ</button>
+        </div>
+    </div>
+</div>
+
+<!-- Модалка Трейлера -->
+<div class="modal-overlay" id="trailer-modal" onclick="closeOnBackdrop(event, 'trailer-modal')">
+    <div class="modal-box trailer-box">
+        <div class="modal-header">
+            <span class="modal-title">Hollow Knight: Silksong // Official Trailer</span>
+            <button class="close-btn" onclick="closeTrailer()">✕</button>
+        </div>
+        <div class="video-wrapper">
+            <iframe id="trailer-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<!-- Модалка Лора -->
+<div class="modal-overlay" id="lore-modal" onclick="closeOnBackdrop(event, 'lore-modal')">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span class="modal-title">Сказания Фарлума // История Silksong</span>
+            <button class="close-btn" onclick="closeModal('lore-modal')">✕</button>
+        </div>
+        <div class="lore-scroll-box">
+            <div class="timeline-event">
+                <div class="timeline-date">Пролог: Пленение Защитницы</div>
+                <div class="timeline-text">Хорнет, принцесса-защитница угасшего Халлоунеста, схвачена неизвестным культом паломников в масках и в железной клетке доставлена в чужие земли, скованные тайной шёлка.</div>
+            </div>
+            <div class="timeline-event">
+                <div class="timeline-date">Земли Фарлума (Pharloom)</div>
+                <div class="timeline-text">Древнее королевство, где правят две силы — <strong>Шёлк</strong> и <strong>Песня</strong>. Обитатели поражены чарами и наваждением, подчиняясь звону колоколов, раздающемуся с вершины мира.</div>
+            </div>
+            <div class="timeline-event">
+                <div class="timeline-date">Паломничество на вершину</div>
+                <div class="timeline-text">В отличие от Полого Рыцаря, спускавшегося во тьму, путь Хорнет лежит снизу вверх: от туманных гротов <em>Moss Grotto</em> и лавовых глубин <em>Deep Docks</em> к Сияющей Цитадели.</div>
+            </div>
+            <div class="timeline-event">
+                <div class="timeline-date">Инструменты и Гребни (Crests)</div>
+                <div class="timeline-text">Утратив былые силы в заточении, Хорнет использует ткацкие иглы, ловушки и рунические гребни, подчиняя шёлковые нити для исцеления ран и смертоносных выпадов.</div>
+            </div>
+            <div class="timeline-event">
+                <div class="timeline-date">Тайна Цитадели</div>
+                <div class="timeline-text">На самом пике Фарлума возвышается запечатанный храм. Ходят слухи, что именно там скрыта истинная причина пленения Хорнет и источник вечной песни, одурманившей разум жуков.</div>
+            </div>
+        </div>
+        <button class="btn-gothic" style="width: 100%;" onclick="closeModal('lore-modal')">ЗАКРЫТЬ СКАЗАНИЕ</button>
+    </div>
+</div>
+
+<!-- Модалка Python (Шёлкоплёт) -->
+<div class="modal-overlay" id="python-modal" onclick="closeOnBackdrop(event, 'python-modal')">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span class="modal-title">Python // Шёлкоплёт (Save Engine)</span>
+            <button class="close-btn" onclick="closeModal('python-modal')">✕</button>
+        </div>
+        <div class="controls-subgrid">
+            <div class="setting-item">
+                <span>Steam ID / Nick:</span>
+                <input type="text" id="py-steam-nick" value="GhostKnight" maxlength="15">
+            </div>
+            <div class="setting-item">
+                <span>Розарии:</span>
+                <input type="number" id="py-rosaries" value="9999" min="0" max="99999">
+            </div>
+        </div>
+        <div class="terminal-screen" id="python-log">
+            [python3.12] Подключен модуль hashlib & struct (x86_64).
+            [ready] Введите никнейм и нажмите "Скомпилировать токен".
+        </div>
+        <div style="display:flex; gap: 10px;">
+            <button class="btn-gothic" style="flex:1;" onclick="execPythonInjection()">СКОМПИЛИРОВАТЬ ТОКЕН</button>
+            <button class="btn-gothic" onclick="closeModal('python-modal')">ОТМЕНА</button>
+        </div>
+    </div>
+</div>
+
+<!-- Модалка Java (Песнь Цитадели) -->
+<div class="modal-overlay" id="java-modal" onclick="closeOnBackdrop(event, 'java-modal')">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span class="modal-title">Java JVM // Песнь Цитадели (Virtual Threads)</span>
+            <button class="close-btn" onclick="closeModal('java-modal')">✕</button>
+        </div>
+        <div class="terminal-screen" id="java-log">
+            [HotSpot 64-Bit Server VM] Thread pool initialized (Virtual Threads: 8)
+            [Heap Memory] Max: 4096MB | Used: 214MB | Status: OPTIMAL
+        </div>
+        <div style="display:flex; gap: 10px;">
+            <button class="btn-gothic" style="flex:1;" onclick="execJavaBytecodePatch()">ЗАПУСТИТЬ ТАКТОВЫЙ ПЕРЕХВАТ</button>
+            <button class="btn-gothic" onclick="closeModal('java-modal')">ЗАКРЫТЬ</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const scaryPhrases = [
+        "ТЫ ДУМАЛ ОНА ВЫЙДЕТ? ВЫХОДА НЕТ.",
+        "ОНО УЖЕ ЗДЕСЬ. ЗА СПИНОЙ.",
+        "СИСТЕМНАЯ ОШИБКА: ПЛОТЬ ПОВРЕЖДЕНА",
+        "ТВОЯ ДУША ПРИНАДЛЕЖИТ ЦИТАДЕЛИ",
+        "ШЁЛК ПРОНИКАЕТ В ТВОИ ВЕНЫ",
+        "7 СЕНТЯБРЯ: ДАТОЙ БЫЛА ТВОЯ СМЕРТЬ",
+        "АХАХАХАХАХАХАХАХАХАХАХАХАХАХАХА",
+        "БЕГИ. ОНО ЗНАЕТ ТВОЙ IP",
+        "VOID CONSUMPTION: 100%",
+        "НЕ ОБОРАЧИВАЙСЯ",
+        "666_ERROR_NO_SILKSONG_FOUND",
+        "КОЛОКОЛА ЗВОНЯТ ПО ТЕБЕ"
+    ];
+
+    let audioCtx = null;
+
+    // Определение реальных параметров устройства
+    (function detectSpecs() {
+        const osElem = document.getElementById('user-os');
+        const coresElem = document.getElementById('user-cores');
+        const ua = navigator.userAgent;
+
+        let os = "Windows 11 x64";
+        if (ua.includes("Mac")) os = "macOS Sequoia";
+        else if (ua.includes("Linux")) os = "Linux x86_64";
+        else if (ua.includes("Android")) os = "Android 15";
+        else if (ua.includes("iPhone")) os = "iOS 18";
+
+        osElem.innerText = os;
+        if (navigator.hardwareConcurrency) {
+            coresElem.innerText = navigator.hardwareConcurrency + " Threads";
+        }
+    })();
+
+    // Колокольчик
+    function playBell() {
+        try {
+            if (!audioCtx) {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioCtx();
+            }
+            const now = audioCtx.currentTime;
+            const notes = [329.63, 392.00, 440.00, 493.88, 587.33];
+            const freq = notes[Math.floor(Math.random() * notes.length)];
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(freq, now);
+
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.exponentialRampToValueAtTime(0.18, now + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.35);
+        } catch (e) {}
+    }
+
+    // Бинауральный визг Бездны (гуляет по панораме L/R)
+    function playBinauralScreech() {
+        try {
+            if (!audioCtx) {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioCtx();
+            }
+            const now = audioCtx.currentTime;
+
+            // Саб-бас
+            const subOsc = audioCtx.createOscillator();
+            const subGain = audioCtx.createGain();
+            subOsc.type = "triangle";
+            subOsc.frequency.setValueAtTime(65, now);
+            subOsc.frequency.exponentialRampToValueAtTime(25, now + 1.2);
+            subGain.gain.setValueAtTime(0.5, now);
+            subGain.gain.exponentialRampToValueAtTime(0.01, now + 1.2);
+            subOsc.connect(subGain);
+            subGain.connect(audioCtx.destination);
+            subOsc.start(now);
+            subOsc.stop(now + 1.2);
+
+            // Панорамный визг
+            const screechOsc = audioCtx.createOscillator();
+            const screechGain = audioCtx.createGain();
+            let panner = null;
+
+            if (audioCtx.createStereoPanner) {
+                panner = audioCtx.createStereoPanner();
+                panner.pan.setValueAtTime(-0.8, now);
+                panner.pan.linearRampToValueAtTime(0.8, now + 0.6);
+            }
+
+            screechOsc.type = "sawtooth";
+            screechOsc.frequency.setValueAtTime(920, now);
+            screechOsc.frequency.exponentialRampToValueAtTime(120, now + 0.6);
+            screechGain.gain.setValueAtTime(0.35, now);
+            screechGain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+
+            if (panner) {
+                screechOsc.connect(panner);
+                panner.connect(screechGain);
+            } else {
+                screechOsc.connect(screechGain);
+            }
+            screechGain.connect(audioCtx.destination);
+
+            screechOsc.start(now);
+            screechOsc.stop(now + 0.6);
+        } catch (e) {}
+    }
+
+    function playGlitchPop() {
+        try {
+            if (!audioCtx) return;
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = "square";
+            osc.frequency.setValueAtTime(180 + Math.random() * 800, now);
+            gain.gain.setValueAtTime(0.25, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.08);
+        } catch (e) {}
+    }
+
+    function triggerVibration(pattern) {
+        if ("vibrate" in navigator) navigator.vibrate(pattern);
+    }
+
+    function openModal(id) {
+        playBell();
+        document.getElementById(id).style.display = 'flex';
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+
+    function closeOnBackdrop(e, id) {
+        if (e.target.id === id) closeModal(id);
+    }
+
+    function openTrailer() {
+        playBell();
+        const iframe = document.getElementById('trailer-iframe');
+        iframe.src = "https://www.youtube-nocookie.com/embed/pFAknD_9U7c?autoplay=1&rel=0";
+        document.getElementById('trailer-modal').style.display = 'flex';
+    }
+
+    function closeTrailer() {
+        const iframe = document.getElementById('trailer-iframe');
+        iframe.src = "";
+        document.getElementById('trailer-modal').style.display = 'none';
+    }
+
+    // Python инъекция
+    function execPythonInjection() {
+        playBell();
+        const log = document.getElementById('python-log');
+        const nick = document.getElementById('py-steam-nick').value || "Knight";
+        const rosaries = document.getElementById('py-rosaries').value;
+
+        log.innerHTML += `<br>[*] Хэширование профиля: SHA256("${nick}")...`;
+        setTimeout(() => {
+            log.innerHTML += `<br>[+] Сгенерирован payload: 0x7F${Math.floor(Math.random()*89999+10000)}A`;
+            log.innerHTML += `<br>[+] Вшито: ${rosaries} Rosaries | Crests: ALL_UNLOCKED`;
+            log.innerHTML += `<br>[✓] Файл user1.dat готов к подмене в AppData.`;
+            log.scrollTop = log.scrollHeight;
+        }, 300);
+    }
+
+    // Java потоки
+    function execJavaBytecodePatch() {
+        playBell();
+        const log = document.getElementById('java-log');
+        log.innerHTML += `<br>[Thread-1] Virtual worker hook into SteamPipe...`;
+        setTimeout(() => {
+            log.innerHTML += `<br>[Thread-4] Direct memory patch applied: 0x90 (NOP)`;
+            log.innerHTML += `<br>[Thread-7] Audio buffer Christopher Larkin: UNLOCKED`;
+            log.innerHTML += `<br>[JVM] Снята блокировка лицензии AppID 1030300.`;
+            log.scrollTop = log.scrollHeight;
+        }, 350);
+    }
+
+    // Tor обход
+    function execMirrorBypass() {
+        playBell();
+        const log = document.getElementById('mirror-log');
+        log.innerHTML += "<br>[*] Отправка auth-ключа в сеть Tor...";
+        setTimeout(() => {
+            log.innerHTML += "<br>[+] Handshake успешен! Узел: tc_build_vault_084";
+            log.innerHTML += "<br>[!] ВНИМАНИЕ: Сработал сторожевой триггер Pharloom!";
+            log.scrollTop = log.scrollHeight;
+            setTimeout(() => {
+                closeModal('mirror-modal');
+                startLoadingProcess("tor_onion_leaked_payload.bin", [
+                    { threshold: 25, text: "Туннелирование через Citadel..." },
+                    { threshold: 50, text: "Взлом корневого сертификата..." },
+                    { threshold: 80, text: "Неизвестная сигнатура в потоке..." },
+                    { threshold: 96, text: "КРИТИЧЕСКОЕ ЗАРАЖЕНИЕ СИСТЕМЫ..." }
+                ]);
+            }, 700);
+        }, 350);
+    }
+
+    function launchViaSteam() {
+        playBell();
+        closeAllModals();
+        window.location.href = "steam://run/1030300";
+        startLoadingProcess("steam_verification_ticket.bin", [
+            { threshold: 30, text: "Проверка лицензии Steam Client..." },
+            { threshold: 65, text: "Синхронизация Cloud Saves..." },
+            { threshold: 90, text: "Верификация подписи Team Cherry..." },
+            { threshold: 98, text: "Ошибка: Игра заблокирована разработчиком!" }
+        ]);
+    }
+
+    function initDownload(mode) {
+        playBell();
+        closeAllModals();
+        startLoadingProcess("silksong_citadel_build.enc", [
+            { threshold: 25, text: "Получение шёлковых пакетов..." },
+            { threshold: 50, text: "Декомпрессия карты Pharloom..." },
+            { threshold: 80, text: "Сборка шейдеров колоколов..." },
+            { threshold: 96, text: "Проверка контрольной суммы SHA-256..." }
+        ]);
+    }
+
+    function closeAllModals() {
+        closeTrailer();
+        closeModal('lore-modal');
+        closeModal('python-modal');
+        closeModal('java-modal');
+        closeModal('mirror-modal');
+    }
+
+    function startLoadingProcess(fileName, steps) {
+        document.getElementById('dev-grid').style.display = 'none';
+        document.getElementById('actions-panel').style.display = 'none';
+        document.getElementById('specs-bar').style.display = 'none';
+        document.getElementById('file-title').innerText = fileName;
+        document.getElementById('download-box').style.display = 'block';
+
+        const progressBar = document.getElementById('progress-bar');
+        const percentLabel = document.getElementById('percent-label');
+        const stateLabel = document.getElementById('state-label');
+
+        let progress = 0;
+        const timer = setInterval(() => {
+            progress += Math.floor(Math.random() * 4) + 2;
+            if (progress > 100) progress = 100;
+
+            progressBar.style.width = progress + '%';
+            percentLabel.innerText = progress + '%';
+
+            const activeStep = steps.find(s => progress < s.threshold);
+            if (activeStep) stateLabel.innerText = activeStep.text;
+
+            if (progress >= 100) {
+                clearInterval(timer);
+                setTimeout(triggerScreamer, 200);
+            }
+        }, 70);
+    }
+
+    // Запуск пранка
+    function triggerScreamer() {
+        playBinauralScreech();
+        triggerVibration([400, 80, 200, 80, 500, 100, 800]);
+
+        // Атака на историю: блокировка кнопки "Назад"
+        for (let i = 0; i < 15; i++) {
+            history.pushState(null, null, location.href);
+        }
+        window.onpopstate = function() {
+            history.pushState(null, null, location.href);
+            playGlitchPop();
+            spawnScaryAlert();
+        };
+
+        // Смена вкладки
+        document.title = "⚠️ CRITICAL SYSTEM THREAT";
+        document.getElementById('favicon').href = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚨</text></svg>";
+
+        document.getElementById('main-body').classList.add('screamer-bg');
+        document.getElementById('shake-container').classList.add('shake-effect');
+        document.getElementById('glitch-overlay').style.display = 'block';
+
+        document.getElementById('badge').style.display = 'none';
+        document.getElementById('desc').style.display = 'none';
+        document.getElementById('download-box').style.display = 'none';
+        document.getElementById('title').style.color = '#ff0033';
+        document.getElementById('title').innerText = "FATAL VOID BREACH";
+        document.getElementById('screamer-img').style.display = 'block';
+
+        setInterval(spawnScaryAlert, 110);
+    }
+
+    function spawnScaryAlert() {
+        if (document.querySelectorAll('.fake-alert').length > 35) return;
+
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'fake-alert';
+
+        const randomText = scaryPhrases[Math.floor(Math.random() * scaryPhrases.length)];
+        const widthBound = Math.max(10, window.innerWidth - 320);
+        const heightBound = Math.max(10, window.innerHeight - 150);
+
+        const x = Math.floor(Math.random() * widthBound);
+        const y = Math.floor(Math.random() * heightBound);
+        const randomRot = (Math.random() * 8 - 4).toFixed(1);
+
+        alertDiv.style.left = x + 'px';
+        alertDiv.style.top = y + 'px';
+        alertDiv.style.transform = `rotate(${randomRot}deg)`;
+
+        alertDiv.innerHTML = `
+            <div class="alert-header">⚠️ СИСТЕМА УНИЧТОЖЕНА ⚠️</div>
+            <div class="alert-body">${randomText}</div>
+            <button onclick="closeScaryAlert(this)">БЕЖАТЬ</button>
+        `;
+
+        document.body.appendChild(alertDiv);
+    }
+
+    function closeScaryAlert(button) {
+        playGlitchPop();
+        triggerVibration(70);
+        button.parentElement.remove();
+        spawnScaryAlert();
+        spawnScaryAlert();
+    }
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeAllModals();
+    });
+</script>
+
+</body>
+</html>
