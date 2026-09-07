@@ -12,9 +12,6 @@
 
 <img src="https://namu.wiki" />
 
-/>
-
-
 </div>
 
 ---
