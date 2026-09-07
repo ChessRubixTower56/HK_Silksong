@@ -10,7 +10,7 @@
 
 <br/>
 
-<img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1030300/header.jpg" alt="Silksong Banner" width="850" style="border-radius: 6px; border: 1px solid #7a612f;" />
+<img src="[https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1030300/header.jpg](https://screenrant.com/hollow-knight-silksong-minecraft/)" alt="Silksong Banner" width="850" style="border-radius: 6px; border: 1px solid #7a612f;" />
 
 </div>
 
