@@ -9,7 +9,8 @@
 [![Stack](https://img.shields.io/badge/Tech-HTML5%20%7C%20CSS3%20%7C%20WebAudio-e63956?style=for-the-badge)](#)
 
 <br/>
-<img src="[[https://vsthemes.org/uploads/posts/2025-09/ee330c5fa8_dpextqmt9l.webp);](https://vsthemes.org/uploads/posts/2025-09/ee330c5fa8_dpextqmt9l.webp](https://vsthemes.org/uploads/posts/2025-09/ee330c5fa8_dpextqmt9l.webp)](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvAPMmzz-HNxT_ZKZ9P-cSAnBUskMSxgyeiM6yh-NnoR3sylUhugIxbg2i&s=10)" />
+
+<img src="[https://i.redd.it/8qhwxq5izkg21.png](https://e7.pngegg.com/pngimages/126/686/png-clipart-hollow-knight-dark-souls-nintendo-switch-team-cherry-shovel-knight-dark-souls-english-mammal.png)" alt="Silksong Banner" width="850" style="border-radius: 6px; border: 1px solid #7a612f;" />
 
 </div>
 
