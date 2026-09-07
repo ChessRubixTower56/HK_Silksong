@@ -10,7 +10,7 @@
 
 <br/>
 
-<img src="[https://e7.pngegg.com/pngimages/996/775/png-clipart-hollow-knight-art-game-art-game-hollow-knight-comics-game.png](https://icon2.cleanpng.com/ci3/kyz/hzl/a5hlvaf8y.webp)" />
+<img src="https://icon2.cleanpng.com/ci3/kyz/hzl/a5hlvaf8y.webp" />
 
 </div>
 
