@@ -10,7 +10,7 @@
 
 <br/>
 
-<img src="[https://screenrant.com/hollow-knight-silksong-minecraft](https://www.vhv.rs/dpng/d/561-5618606_hollow-knight-hollow-knight-hornet-hollow-knight.png)" />
+<img src="(https://www.vhv.rs/dpng/d/561-5618606_hollow-knight-hollow-knight-hornet-hollow-knight.png)" />
 
 </div>
 
