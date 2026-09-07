@@ -10,7 +10,7 @@
 
 <br/>
 
-<img src="[https://i.redd.it/8qhwxq5izkg21.png](https://e7.pngegg.com/pngimages/126/686/png-clipart-hollow-knight-dark-souls-nintendo-switch-team-cherry-shovel-knight-dark-souls-english-mammal.png)" alt="Silksong Banner" width="850" style="border-radius: 6px; border: 1px solid #7a612f;" />
+<img src="https://i.redd.it/0ggc09llikg21.jpg" alt="Silksong Banner" width="850" style="border-radius: 6px; border: 1px solid #7a612f;" />
 
 </div>
 
