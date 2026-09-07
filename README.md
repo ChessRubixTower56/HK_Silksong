@@ -10,7 +10,7 @@
 
 <br/>
 
-<img src="[https://www.clipartmax.com/png/middle/116-1165614_hollow-knight-hornet-mask.png](https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/8d40e9ca-1974-4a87-bbfa-165264db741b/dfptxrg-c97eaafd-567b-4e5d-9d14-61def7e20205.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi84ZDQwZTljYS0xOTc0LTRhODctYmJmYS0xNjUyNjRkYjc0MWIvZGZwdHhyZy1jOTdlYWFmZC01NjdiLTRlNWQtOWQxNC02MWRlZjdlMjAyMDUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.KlHJWoaLOBgygHrXF4NAhcbJfPwXyBcMI61c--RtucA)" alt="Silksong Banner" width="850" style="border-radius: 6px; border: 1px solid #7a612f;" />
+<img src="https://w7.pngwing.com/pngs/815/92/png-transparent-hollow-knight-drawing-design-game-vertebrate-half-thumbnail.png" />
 
 </div>
 
