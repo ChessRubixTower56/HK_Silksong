@@ -10,7 +10,7 @@
 
 <br/>
 
-<img src="https://i.redd.it/7bgaj1pmaig21.jpg" alt="Silksong Banner" width="850" style="border-radius: 6px; border: 1px solid #7a612f;" />
+<img src="https://www.clipartmax.com/png/middle/116-1165614_hollow-knight-hornet-mask.png" alt="Silksong Banner" width="850" style="border-radius: 6px; border: 1px solid #7a612f;" />
 
 </div>
 
