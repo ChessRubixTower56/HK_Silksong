@@ -11,7 +11,7 @@
 <br/>
 
 <img src="<img width="3840" height="2160" alt="image" src="https://github.com/user-attachments/assets/b3fdef90-d923-4a99-b161-7eeffd86fb5d" />
-" alt="Silksong Banner" width="800" style="border-radius: 8px; border: 1px solid #7a612f;" />
+
 
 </div>
 
