@@ -10,7 +10,7 @@
 
 <br/>
 
-<img src="https://namu.wiki" />
+<img src="https://i.redd.it/8qhwxq5izkg21.png" alt="Silksong Banner" width="850" style="border-radius: 6px; border: 1px solid #7a612f;" />
 
 </div>
 
