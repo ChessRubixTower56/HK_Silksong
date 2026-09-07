@@ -10,7 +10,7 @@
 
 <br/>
 
-<img src="https://w0.peakpx.com/wallpaper/406/820/HD-wallpaper-hollow-knight-silksong-hornet-2025-video-game-u-games-2025.jpg" alt="Silksong Banner" width="850" style="border-radius: 6px; border: 1px solid #7a612f;" />
+<img src="https://i.redd.it/7bgaj1pmaig21.jpg" alt="Silksong Banner" width="850" style="border-radius: 6px; border: 1px solid #7a612f;" />
 
 </div>
 
