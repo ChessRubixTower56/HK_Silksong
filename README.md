@@ -10,7 +10,7 @@
 
 <br/>
 
-<img src="	https://preview.redd.it/merged-my-favorite-hungry-knight-banner-with-the-new-hornet-v0-4vzmkbhfssg21.png?width=640&crop=smart&auto=webp&s=22713d3684f0628c683cc11153e2de2ed3774cb)" />
+<img src="	https://preview.redd.it/merged-my-favorite-hungry-…o=webp&s=22713d3684f0628c683cc11153e2de2ed3774cbf" />
 
 </div>
 
