@@ -10,7 +10,7 @@
 
 <br/>
 
-<img src="https://redd.it" />
+<img src=["https://redd.it"](https://preview.redd.it/merged-my-favorite-hungry-knight-banner-with-the-new-hornet-v0-4vzmkbhfssg21.png?width=1080&crop=smart&auto=webp&s=81e6a107b39c7f9fe1e980a96df828b40bd6d18c) />
 
 </div>
 
